@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { MonitorPlay } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -14,11 +15,20 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 export default function Login() {
+  const { user, profile, loading } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
+
+  useEffect(() => {
+    if (!loading && user && profile) {
+      if (profile.role === 'screen_owner') navigate('/screen-owner');
+      else if (profile.role === 'advertiser') navigate('/advertiser');
+      else if (profile.role === 'admin') navigate('/admin');
+    }
+  }, [user, profile, loading, navigate]);
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
