@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -42,98 +43,109 @@ export default function CreativeUpload() {
   };
 
   return (
-    <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-      <div className="md:grid md:grid-cols-3 md:gap-6">
-        <div className="md:col-span-1">
-          <h3 className="text-lg font-medium leading-6 text-gray-900">Upload Creative</h3>
-          <p className="mt-1 text-sm text-gray-500">
+    <div className="bg-slate-900 border border-slate-800 shadow-sm rounded-xl overflow-hidden">
+      <div className="px-6 py-6 border-b border-slate-800">
+          <h3 className="text-lg font-semibold text-white">Upload Creative</h3>
+          <p className="mt-1 text-sm text-slate-400">
             Upload your ad content (Image or Video).
           </p>
-        </div>
-        <div className="mt-5 md:mt-0 md:col-span-2">
+      </div>
+
+      <div className="p-6">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Creative Name</label>
-                <input
-                  {...register('name')}
-                  type="text"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                <label htmlFor="name" className="form-label">Creative Name</label>
+                <div className="mt-2">
+                  <input
+                    {...register('name')}
+                    type="text"
+                    className="form-input"
+                  />
+                  {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
+                </div>
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="file_type" className="block text-sm font-medium text-gray-700">File Type</label>
-                <select
-                  {...register('file_type')}
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  <option value="image">Image</option>
-                  <option value="video">Video</option>
-                </select>
+                <label htmlFor="file_type" className="form-label">File Type</label>
+                <div className="mt-2">
+                  <select
+                    {...register('file_type')}
+                    className="form-input"
+                  >
+                    <option value="image">Image</option>
+                    <option value="video">Video</option>
+                  </select>
+                </div>
               </div>
 
                <div className="col-span-6">
-                <label htmlFor="file_url" className="block text-sm font-medium text-gray-700">File URL (Mock Upload)</label>
-                <input
-                  {...register('file_url')}
-                  type="text"
-                  placeholder="https://example.com/image.jpg"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-                {errors.file_url && <p className="text-red-500 text-xs mt-1">{errors.file_url.message}</p>}
+                <label htmlFor="file_url" className="form-label">File URL (Mock Upload)</label>
+                <div className="mt-2">
+                  <input
+                    {...register('file_url')}
+                    type="text"
+                    placeholder="https://example.com/image.jpg"
+                    className="form-input"
+                  />
+                  {errors.file_url && <p className="text-red-400 text-xs mt-1">{errors.file_url.message}</p>}
+                </div>
               </div>
 
               {fileType === 'video' && (
                 <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="duration_seconds" className="block text-sm font-medium text-gray-700">Duration (seconds)</label>
-                  <input
-                    {...register('duration_seconds', { valueAsNumber: true })}
-                    type="number"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  />
-                  {errors.duration_seconds && <p className="text-red-500 text-xs mt-1">{errors.duration_seconds.message}</p>}
+                  <label htmlFor="duration_seconds" className="form-label">Duration (seconds)</label>
+                  <div className="mt-2">
+                    <input
+                      {...register('duration_seconds', { valueAsNumber: true })}
+                      type="number"
+                      className="form-input"
+                    />
+                    {errors.duration_seconds && <p className="text-red-400 text-xs mt-1">{errors.duration_seconds.message}</p>}
+                  </div>
                 </div>
               )}
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="width" className="block text-sm font-medium text-gray-700">Width (px)</label>
-                <input
-                  {...register('width', { valueAsNumber: true })}
-                  type="number"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
+                <label htmlFor="width" className="form-label">Width (px)</label>
+                <div className="mt-2">
+                  <input
+                    {...register('width', { valueAsNumber: true })}
+                    type="number"
+                    className="form-input"
+                  />
+                </div>
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="height" className="block text-sm font-medium text-gray-700">Height (px)</label>
-                <input
-                  {...register('height', { valueAsNumber: true })}
-                  type="number"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
+                <label htmlFor="height" className="form-label">Height (px)</label>
+                <div className="mt-2">
+                   <input
+                    {...register('height', { valueAsNumber: true })}
+                    type="number"
+                    className="form-input"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end">
+            <div className="mt-8 flex justify-end pt-6 border-t border-slate-800">
                  <button
                     type="button"
                     onClick={() => navigate('/advertiser/creatives')}
-                    className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3"
+                    className="bg-transparent py-2.5 px-4 border border-slate-700 rounded-lg shadow-sm text-sm font-medium text-slate-300 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 mr-3 transition-colors"
                 >
                     Cancel
                 </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="btn-primary w-auto px-6"
               >
                 {isSubmitting ? 'Uploading...' : 'Upload Creative'}
               </button>
             </div>
           </form>
-        </div>
       </div>
     </div>
   );

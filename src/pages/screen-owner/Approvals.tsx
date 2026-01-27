@@ -4,8 +4,8 @@ import { Check, X, Film } from 'lucide-react';
 export default function Approvals() {
   const { approvals, isLoading, error, updateStatus } = useApprovals();
 
-  if (isLoading) return <div>Loading approvals...</div>;
-  if (error) return <div>Error loading approvals</div>;
+  if (isLoading) return <div className="text-slate-400">Loading approvals...</div>;
+  if (error) return <div className="text-red-400">Error loading approvals</div>;
 
   const handleStatusChange = async (id: string, status: 'approved' | 'rejected') => {
     try {
@@ -17,25 +17,25 @@ export default function Approvals() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">Content Approvals</h1>
+      <h1 className="text-2xl font-bold text-white mb-6">Content Approvals</h1>
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul role="list" className="divide-y divide-gray-200">
+      <div className="bg-slate-900 border border-slate-800 shadow-sm rounded-xl overflow-hidden">
+        <ul role="list" className="divide-y divide-slate-800">
           {approvals?.map((approval) => (
             <li key={approval.id}>
-              <div className="px-4 py-4 sm:px-6">
+              <div className="px-6 py-5">
                 <div className="flex items-center justify-between">
                    <div className="flex items-center">
-                        <div className="flex-shrink-0 h-16 w-16 bg-gray-100 rounded flex items-center justify-center">
+                        <div className="flex-shrink-0 h-16 w-16 bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden border border-slate-700">
                             {approval.creative.file_type === 'image' ? (
-                                <img src={approval.creative.file_url} alt="" className="h-16 w-16 object-cover rounded" />
+                                <img src={approval.creative.file_url} alt="" className="h-full w-full object-cover" />
                             ) : (
-                                <Film className="h-8 w-8 text-gray-400" />
+                                <Film className="h-8 w-8 text-slate-500" />
                             )}
                         </div>
                         <div className="ml-4">
-                            <h3 className="text-lg font-medium leading-6 text-gray-900">{approval.creative.name}</h3>
-                            <p className="text-sm text-gray-500">Proposed for screen: <span className="font-medium">{approval.screen.name}</span></p>
+                            <h3 className="text-lg font-medium text-white">{approval.creative.name}</h3>
+                            <p className="text-sm text-slate-400">Proposed for screen: <span className="font-medium text-slate-300">{approval.screen.name}</span></p>
                         </div>
                    </div>
                    <div className="flex items-center space-x-2">
@@ -43,20 +43,22 @@ export default function Approvals() {
                            <>
                                 <button
                                     onClick={() => handleStatusChange(approval.id, 'approved')}
-                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
                                 >
                                     <Check className="h-4 w-4 mr-1" /> Approve
                                 </button>
                                 <button
                                     onClick={() => handleStatusChange(approval.id, 'rejected')}
-                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                                 >
                                     <X className="h-4 w-4 mr-1" /> Reject
                                 </button>
                            </>
                        ) : (
-                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                               approval.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ring-1 ring-inset ${
+                               approval.status === 'approved' 
+                                 ? 'bg-green-400/10 text-green-400 ring-green-400/20' 
+                                 : 'bg-red-400/10 text-red-400 ring-red-400/20'
                            }`}>
                                {approval.status}
                            </span>
@@ -67,7 +69,7 @@ export default function Approvals() {
             </li>
           ))}
           {approvals?.length === 0 && (
-              <li className="px-4 py-12 text-center text-gray-500">
+              <li className="px-6 py-12 text-center text-slate-500">
                   No pending approvals.
               </li>
           )}

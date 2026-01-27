@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { MonitorPlay } from 'lucide-react';
 
 const signupSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -46,7 +47,6 @@ export default function Signup() {
       });
 
       if (profileError) {
-        // Optional: Delete the user if profile creation fails to maintain consistency
         console.error('Profile creation failed:', profileError);
         throw new Error('Failed to create profile');
       }
@@ -58,79 +58,114 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-              sign in to existing account
-            </Link>
-          </p>
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-950">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex justify-center">
+          <div className="rounded-xl bg-brand-500/10 p-3 ring-1 ring-brand-500/20">
+             <MonitorPlay className="h-10 w-10 text-brand-500" />
+          </div>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="rounded-md shadow-sm space-y-4">
+        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
+          Create your account
+        </h2>
+        <p className="mt-2 text-center text-sm text-slate-400">
+          Or{' '}
+          <Link to="/login" className="font-medium text-brand-400 hover:text-brand-300 transition-colors">
+            sign in to existing account
+          </Link>
+        </p>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-slate-900 py-8 px-4 shadow-xl ring-1 ring-slate-800 sm:rounded-xl sm:px-10">
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-              <input
-                {...register('email')}
-                type="email"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+              <label htmlFor="email" className="form-label">Email address</label>
+              <div className="mt-2">
+                <input
+                  {...register('email')}
+                  id="email"
+                  type="email"
+                  className="form-input"
+                />
+                {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
+              </div>
             </div>
+
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                {...register('password')}
-                type="password"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+              <label htmlFor="password" className="form-label">Password</label>
+              <div className="mt-2">
+                <input
+                  {...register('password')}
+                  id="password"
+                  type="password"
+                  className="form-input"
+                />
+                {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
+              </div>
             </div>
+
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
-              <input
-                {...register('fullName')}
-                type="text"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-              {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
+              <label htmlFor="fullName" className="form-label">Full Name</label>
+              <div className="mt-2">
+                <input
+                  {...register('fullName')}
+                  id="fullName"
+                  type="text"
+                  className="form-input"
+                />
+                {errors.fullName && <p className="text-red-400 text-xs mt-1">{errors.fullName.message}</p>}
+              </div>
             </div>
+
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">I am a...</label>
-              <select
-                {...register('role')}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              <label htmlFor="role" className="form-label">I am a...</label>
+              <div className="mt-2">
+                <select
+                  {...register('role')}
+                  id="role"
+                  className="form-input"
+                >
+                  <option value="screen_owner">Screen Owner (I have screens)</option>
+                  <option value="advertiser">Advertiser (I want to buy ads)</option>
+                </select>
+                {errors.role && <p className="text-red-400 text-xs mt-1">{errors.role.message}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="companyName" className="form-label">Company Name (Optional)</label>
+              <div className="mt-2">
+                <input
+                  {...register('companyName')}
+                  id="companyName"
+                  type="text"
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            {error && (
+              <div className="rounded-md bg-red-900/30 p-4 border border-red-900/50">
+                <div className="flex">
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-200">{error}</h3>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-primary"
               >
-                <option value="screen_owner">Screen Owner (I have screens)</option>
-                <option value="advertiser">Advertiser (I want to buy ads)</option>
-              </select>
-              {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
+                {isSubmitting ? 'Creating account...' : 'Create Account'}
+              </button>
             </div>
-            <div>
-              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">Company Name (Optional)</label>
-              <input
-                {...register('companyName')}
-                type="text"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-
-          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
-
-          <div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-            >
-              {isSubmitting ? 'Creating account...' : 'Create Account'}
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

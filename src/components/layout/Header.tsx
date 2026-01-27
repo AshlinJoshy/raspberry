@@ -1,6 +1,6 @@
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Bell } from 'lucide-react';
+import { LogOut, Bell, MonitorPlay } from 'lucide-react';
 
 export default function Header() {
   const { user, profile, signOut } = useAuth();
@@ -12,26 +12,32 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="bg-slate-900 border-b border-slate-800 h-16 fixed top-0 w-full z-10">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <span className="text-xl font-bold text-indigo-600">AdScreen</span>
+            <div className="flex-shrink-0 flex items-center space-x-2">
+              <MonitorPlay className="h-8 w-8 text-brand-500" />
+              <span className="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">AdScreen</span>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 focus:ring-offset-slate-900">
               <span className="sr-only">View notifications</span>
-              <Bell className="h-6 w-6" />
+              <Bell className="h-5 w-5" />
             </button>
-            <div className="relative flex items-center space-x-2">
+            <div className="h-6 w-px bg-slate-800" aria-hidden="true" />
+            <div className="relative flex items-center space-x-4">
               <div className="flex flex-col text-right hidden sm:block">
-                <span className="text-sm font-medium text-gray-900">{profile?.full_name || user?.email}</span>
-                <span className="text-xs text-gray-500 capitalize">{profile?.role?.replace('_', ' ')}</span>
+                <span className="text-sm font-medium text-slate-200">{profile?.full_name || user?.email}</span>
+                <span className="text-xs text-slate-500 capitalize">{profile?.role?.replace('_', ' ')}</span>
               </div>
-              <div className="ml-3 relative">
-                 <button onClick={handleSignOut} className="p-2 text-gray-400 hover:text-gray-500">
+              <div className="relative">
+                 <button 
+                  onClick={handleSignOut} 
+                  className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  title="Sign out"
+                 >
                     <LogOut className="h-5 w-5" />
                  </button>
               </div>

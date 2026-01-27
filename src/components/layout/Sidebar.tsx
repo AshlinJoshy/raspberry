@@ -9,9 +9,6 @@ export default function Sidebar() {
   const role = profile?.role;
 
   const navigation = [
-    // Common
-    // { name: 'Dashboard', href: role === 'screen_owner' ? '/screen-owner' : role === 'advertiser' ? '/advertiser' : '/admin', icon: LayoutDashboard },
-    
     // Screen Owner
     ...(role === 'screen_owner' ? [
       { name: 'Dashboard', href: '/screen-owner', icon: LayoutDashboard, end: true },
@@ -34,9 +31,9 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="flex flex-col w-64 bg-gray-800 h-screen fixed top-0 left-0 pt-16">
+    <div className="flex flex-col w-64 bg-slate-900 border-r border-slate-800 h-full fixed top-16 left-0">
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-        <nav className="mt-5 flex-1 px-2 space-y-1">
+        <nav className="mt-2 flex-1 px-2 space-y-1">
           {navigation.map((item) => (
             <NavLink
               key={item.name}
@@ -44,14 +41,17 @@ export default function Sidebar() {
               end={item.end}
               className={({ isActive }) =>
                 clsx(
-                  isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                  isActive 
+                    ? 'bg-brand-500/10 text-brand-400 border-l-2 border-brand-500' 
+                    : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200 border-l-2 border-transparent',
+                  'group flex items-center px-3 py-2 text-sm font-medium transition-colors duration-150'
                 )
               }
             >
               <item.icon
                 className={clsx(
-                  'mr-3 flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-300'
+                  'mr-3 flex-shrink-0 h-5 w-5',
+                  // Icon color handling is done by parent text color classes mostly, but can force if needed
                 )}
                 aria-hidden="true"
               />

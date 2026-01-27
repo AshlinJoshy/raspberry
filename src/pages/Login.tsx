@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { MonitorPlay } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -35,53 +36,80 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
-              create a new account
-            </Link>
-          </p>
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-950">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex justify-center">
+          <div className="rounded-xl bg-brand-500/10 p-3 ring-1 ring-brand-500/20">
+            <MonitorPlay className="h-10 w-10 text-brand-500" />
+          </div>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <input
-                {...register('email')}
-                type="email"
-                autoComplete="email"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-              />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-            </div>
-            <div>
-              <input
-                {...register('password')}
-                type="password"
-                autoComplete="current-password"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-            </div>
-          </div>
+        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
+          Sign in to AdScreen
+        </h2>
+        <p className="mt-2 text-center text-sm text-slate-400">
+          Or{' '}
+          <Link to="/signup" className="font-medium text-brand-400 hover:text-brand-300 transition-colors">
+            create a new account
+          </Link>
+        </p>
+      </div>
 
-          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-slate-900 py-8 px-4 shadow-xl ring-1 ring-slate-800 sm:rounded-xl sm:px-10">
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label htmlFor="email" className="form-label">
+                Email address
+              </label>
+              <div className="mt-2">
+                <input
+                  {...register('email')}
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  className="form-input"
+                />
+                {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
+              </div>
+            </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-            >
-              {isSubmitting ? 'Signing in...' : 'Sign in'}
-            </button>
-          </div>
-        </form>
+            <div>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <div className="mt-2">
+                <input
+                  {...register('password')}
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  className="form-input"
+                />
+                {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
+              </div>
+            </div>
+
+            {error && (
+              <div className="rounded-md bg-red-900/30 p-4 border border-red-900/50">
+                <div className="flex">
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-200">{error}</h3>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-primary"
+              >
+                {isSubmitting ? 'Signing in...' : 'Sign in'}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

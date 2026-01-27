@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -46,123 +47,133 @@ export default function CampaignForm() {
   const approvedCreatives = creatives?.filter(c => c.status === 'approved' || c.status === 'pending'); // Allow pending for MVP testing
 
   return (
-    <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-      <div className="md:grid md:grid-cols-3 md:gap-6">
-        <div className="md:col-span-1">
-          <h3 className="text-lg font-medium leading-6 text-gray-900">Create Campaign</h3>
-          <p className="mt-1 text-sm text-gray-500">
+    <div className="bg-slate-900 border border-slate-800 shadow-sm rounded-xl overflow-hidden">
+      <div className="px-6 py-6 border-b border-slate-800">
+          <h3 className="text-lg font-semibold text-white">Create Campaign</h3>
+          <p className="mt-1 text-sm text-slate-400">
             Target your ads to specific screens and locations.
           </p>
-        </div>
-        <div className="mt-5 md:mt-0 md:col-span-2">
+      </div>
+      <div className="p-6">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Campaign Name</label>
-                <input
-                  {...register('name')}
-                  type="text"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                <label htmlFor="name" className="form-label">Campaign Name</label>
+                <div className="mt-2">
+                  <input
+                    {...register('name')}
+                    type="text"
+                    className="form-input"
+                  />
+                  {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
+                </div>
               </div>
 
               <div className="col-span-6">
-                <label htmlFor="creative_id" className="block text-sm font-medium text-gray-700">Select Creative</label>
-                <select
-                  {...register('creative_id')}
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  <option value="">Select a creative...</option>
-                  {approvedCreatives?.map(creative => (
-                    <option key={creative.id} value={creative.id}>
-                      {creative.name} ({creative.file_type})
-                    </option>
-                  ))}
-                </select>
-                {errors.creative_id && <p className="text-red-500 text-xs mt-1">{errors.creative_id.message}</p>}
+                <label htmlFor="creative_id" className="form-label">Select Creative</label>
+                <div className="mt-2">
+                  <select
+                    {...register('creative_id')}
+                    className="form-input"
+                  >
+                    <option value="">Select a creative...</option>
+                    {approvedCreatives?.map(creative => (
+                      <option key={creative.id} value={creative.id}>
+                        {creative.name} ({creative.file_type})
+                      </option>
+                    ))}
+                  </select>
+                  {errors.creative_id && <p className="text-red-400 text-xs mt-1">{errors.creative_id.message}</p>}
+                </div>
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">Start Date</label>
-                <input
-                  {...register('start_date')}
-                  type="date"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-                {errors.start_date && <p className="text-red-500 text-xs mt-1">{errors.start_date.message}</p>}
+                <label htmlFor="start_date" className="form-label">Start Date</label>
+                <div className="mt-2">
+                  <input
+                    {...register('start_date')}
+                    type="date"
+                    className="form-input"
+                  />
+                  {errors.start_date && <p className="text-red-400 text-xs mt-1">{errors.start_date.message}</p>}
+                </div>
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="end_date" className="block text-sm font-medium text-gray-700">End Date</label>
-                <input
-                  {...register('end_date')}
-                  type="date"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-                {errors.end_date && <p className="text-red-500 text-xs mt-1">{errors.end_date.message}</p>}
+                <label htmlFor="end_date" className="form-label">End Date</label>
+                <div className="mt-2">
+                   <input
+                    {...register('end_date')}
+                    type="date"
+                    className="form-input"
+                  />
+                  {errors.end_date && <p className="text-red-400 text-xs mt-1">{errors.end_date.message}</p>}
+                </div>
               </div>
 
               <div className="col-span-6">
-                <label className="block text-sm font-medium text-gray-700">Target Screen Types</label>
-                <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                <label className="form-label mb-2">Target Screen Types</label>
+                <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {['mall', 'gym', 'taxi', 'highway', 'other'].map((type) => (
-                    <div key={type} className="flex items-start">
+                    <div key={type} className="relative flex items-start">
                       <div className="flex items-center h-5">
                         <input
                           type="checkbox"
                           value={type}
                           {...register('target_screen_types')}
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                          className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-brand-600 focus:ring-brand-500 focus:ring-offset-slate-900"
                         />
                       </div>
-                      <div className="ml-3 text-sm">
-                        <label className="font-medium text-gray-700 capitalize">{type}</label>
+                      <div className="ml-3 text-sm leading-6">
+                        <label className="font-medium text-slate-300 capitalize">{type}</label>
                       </div>
                     </div>
                   ))}
                 </div>
-                {errors.target_screen_types && <p className="text-red-500 text-xs mt-1">{errors.target_screen_types.message}</p>}
+                {errors.target_screen_types && <p className="text-red-400 text-xs mt-1">{errors.target_screen_types.message}</p>}
               </div>
 
               <div className="col-span-6">
-                <label htmlFor="target_cities" className="block text-sm font-medium text-gray-700">Target Cities (Comma separated)</label>
-                <input
-                  {...register('target_cities')}
-                  type="text"
-                  placeholder="New York, Los Angeles, Chicago"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
+                <label htmlFor="target_cities" className="form-label">Target Cities (Comma separated)</label>
+                <div className="mt-2">
+                  <input
+                    {...register('target_cities')}
+                    type="text"
+                    placeholder="New York, Los Angeles, Chicago"
+                    className="form-input"
+                  />
+                </div>
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="budget" className="block text-sm font-medium text-gray-700">Budget ($)</label>
-                <input
-                  {...register('budget', { valueAsNumber: true })}
-                  type="number"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
+                <label htmlFor="budget" className="form-label">Budget ($)</label>
+                <div className="mt-2">
+                  <input
+                    {...register('budget', { valueAsNumber: true })}
+                    type="number"
+                    className="form-input"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end">
-                <button
+            <div className="mt-8 flex justify-end pt-6 border-t border-slate-800">
+                 <button
                     type="button"
                     onClick={() => navigate('/advertiser/campaigns')}
-                    className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3"
+                    className="bg-transparent py-2.5 px-4 border border-slate-700 rounded-lg shadow-sm text-sm font-medium text-slate-300 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 mr-3 transition-colors"
                 >
                     Cancel
                 </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="btn-primary w-auto px-6"
               >
                 {isSubmitting ? 'Creating...' : 'Create Campaign'}
               </button>
             </div>
           </form>
-        </div>
       </div>
     </div>
   );
