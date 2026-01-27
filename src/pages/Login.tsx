@@ -45,7 +45,12 @@ export default function Login() {
       if (error) throw error;
       navigate('/');
     } catch (err: any) {
-      setError(err.message || 'Failed to login');
+      console.error('Login error:', err);
+      let message = err.message || 'Failed to login';
+      if (message === 'Failed to fetch') {
+        message = 'Connection to Supabase failed. Please check if your VITE_SUPABASE_URL is correct and accessible.';
+      }
+      setError(message);
     }
   };
 

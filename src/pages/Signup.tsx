@@ -61,7 +61,12 @@ export default function Signup() {
 
       navigate('/');
     } catch (err: any) {
-      setError(err.message || 'Failed to sign up');
+      console.error('Signup error:', err);
+      let message = err.message || 'Failed to sign up';
+      if (message === 'Failed to fetch') {
+        message = 'Connection to Supabase failed. Please check if your VITE_SUPABASE_URL is correct and accessible.';
+      }
+      setError(message);
     }
   };
 
