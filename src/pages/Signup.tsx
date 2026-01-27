@@ -9,9 +9,13 @@ import { MonitorPlay } from 'lucide-react';
 const signupSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  confirmPassword: z.string().min(6, 'Password confirmation is required'),
   fullName: z.string().min(2, 'Full name is required'),
   role: z.enum(['screen_owner', 'advertiser']),
   companyName: z.string().optional(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 type SignupFormInputs = z.infer<typeof signupSchema>;
@@ -106,6 +110,19 @@ export default function Signup() {
                   className="form-input"
                 />
                 {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+              <div className="mt-2">
+                <input
+                  {...register('confirmPassword')}
+                  id="confirmPassword"
+                  type="password"
+                  className="form-input"
+                />
+                {errors.confirmPassword && <p className="text-red-400 text-xs mt-1">{errors.confirmPassword.message}</p>}
               </div>
             </div>
 
