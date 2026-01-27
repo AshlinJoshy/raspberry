@@ -7,6 +7,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.warn('Missing Supabase environment variables. Please check your .env file.');
 }
 
+export const isSupabaseConfigured = () => {
+  return supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('placeholder');
+};
+
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder-key'

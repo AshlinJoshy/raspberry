@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { MonitorPlay } from 'lucide-react';
 
 const loginSchema = z.object({
@@ -22,6 +22,10 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
+      if (!isSupabaseConfigured()) {
+        throw new Error("Supabase environment variables are missing. Please check your deployment settings.");
+      }
+
       setError(null);
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
