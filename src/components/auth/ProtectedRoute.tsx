@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, effectiveRole, isSuperAdmin } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -19,11 +19,18 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (allowedRoles && profile && !allowedRoles.includes(profile.role)) {
+  // SuperAdmin can access everything
+  if (isSuperAdmin) {
+    return <>{children}</>;
+  }
+
+  const role = effectiveRole || profile?.role;
+
+  if (allowedRoles && role && !allowedRoles.includes(role)) {
     // Redirect to appropriate dashboard based on actual role
-    if (profile.role === 'screen_owner') return <Navigate to="/screen-owner" replace />;
-    if (profile.role === 'advertiser') return <Navigate to="/advertiser" replace />;
-    if (profile.role === 'admin') return <Navigate to="/admin" replace />;
+    if (role === 'screen_owner') return <Navigate to="/screen-owner" replace />;
+    if (role === 'advertiser') return <Navigate to="/advertiser" replace />;
+    if (role === 'admin') return <Navigate to="/admin" replace />;
     return <Navigate to="/" replace />;
   }
 
