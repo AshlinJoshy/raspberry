@@ -13,7 +13,7 @@ export default function RoleSwitcher() {
   ] as const;
 
   return (
-    <div className="px-4 py-4 border-t border-slate-800">
+    <div>
       <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
         Test as Role
       </p>

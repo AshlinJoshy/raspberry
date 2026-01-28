@@ -32,7 +32,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="flex flex-col w-64 bg-slate-900 border-r border-slate-800 h-full fixed top-16 left-0">
+    <div className="flex flex-col w-64 bg-slate-900 border-r border-slate-800 h-[calc(100vh-4rem)] fixed top-16 left-0">
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
         <nav className="mt-2 flex-1 px-2 space-y-1">
           {navigation.map((item) => (
@@ -61,7 +61,9 @@ export default function Sidebar() {
           ))}
         </nav>
       </div>
-      <RoleSwitcher />
+      <div className="p-4 border-t border-slate-800">
+        <RoleSwitcher />
+      </div>
     </div>
   );
 }
