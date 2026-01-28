@@ -18,16 +18,21 @@ import Approvals from '../pages/screen-owner/Approvals';
 import { useAuth } from '../hooks/useAuth';
 
 export default function AppRoutes() {
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, effectiveRole, isSuperAdmin } = useAuth();
 
   // Helper to determine home route based on role
   const getHomeRoute = () => {
     if (loading) return null; // Or a loading spinner route
     if (!user) return <Navigate to="/login" replace />;
     
-    if (profile?.role === 'screen_owner') return <Navigate to="/screen-owner" replace />;
-    if (profile?.role === 'advertiser') return <Navigate to="/advertiser" replace />;
-    if (profile?.role === 'admin') return <Navigate to="/admin" replace />;
+    // SuperAdmin stays on current view or defaults to admin
+    if (isSuperAdmin && !effectiveRole) return <Navigate to="/admin" replace />;
+
+    const role = effectiveRole || profile?.role;
+    
+    if (role === 'screen_owner') return <Navigate to="/screen-owner" replace />;
+    if (role === 'advertiser') return <Navigate to="/advertiser" replace />;
+    if (role === 'admin') return <Navigate to="/admin" replace />;
     
     return <Navigate to="/login" replace />; // Fallback
   };

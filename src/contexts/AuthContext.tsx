@@ -15,9 +15,12 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
+  effectiveRole: UserRole | null;
+  isSuperAdmin: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  impersonateRole: (role: UserRole) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,6 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [impersonatedRole, setImpersonatedRole] = useState<UserRole | null>(null);
 
   const fetchProfile = async (userId: string) => {
     try {
@@ -55,9 +59,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        // Fetch profile but don't stop loading until done? 
-        // Actually for UX speed we often want to show something, 
-        // but for protected routes we need profile.
         fetchProfile(session.user.id).then(() => {
           if (mounted) setLoading(false);
         });
@@ -75,12 +76,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(session?.user ?? null);
       
       if (session?.user) {
-         // Only fetch if profile is missing or user changed?
-         // For simplicity, we fetch to ensure fresh role.
-         // We won't toggle loading here to avoid flashing if just refreshing token
          fetchProfile(session.user.id);
       } else {
         setProfile(null);
+        setImpersonatedRole(null);
       }
       setLoading(false);
     });
@@ -96,6 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setProfile(null);
     setUser(null);
     setSession(null);
+    setImpersonatedRole(null);
   };
 
   const refreshProfile = async () => {
@@ -104,15 +104,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Memoize the value to prevent unnecessary re-renders in consumers
+  const impersonateRole = (role: UserRole) => {
+    if (profile?.role === 'admin') {
+      setImpersonatedRole(role);
+    }
+  };
+
+  const isSuperAdmin = profile?.role === 'admin';
+  const effectiveRole = impersonatedRole || profile?.role || null;
+
   const value = useMemo(() => ({
     user,
     session,
     profile,
+    effectiveRole,
+    isSuperAdmin,
     loading,
     signOut,
-    refreshProfile
-  }), [user, session, profile, loading]);
+    refreshProfile,
+    impersonateRole
+  }), [user, session, profile, effectiveRole, isSuperAdmin, loading, impersonatedRole]);
 
   return (
     <AuthContext.Provider value={value}>

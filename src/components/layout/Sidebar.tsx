@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { LayoutDashboard, Monitor, CheckSquare, Megaphone, Image, Users } from 'lucide-react';
+import RoleSwitcher from './RoleSwitcher';
 import clsx from 'clsx';
 
 export default function Sidebar() {
-  const { profile } = useAuth();
+  const { profile, effectiveRole } = useAuth();
 
-  const role = profile?.role;
+  const role = effectiveRole || profile?.role;
 
   const navigation = [
     // Screen Owner
@@ -60,6 +61,7 @@ export default function Sidebar() {
           ))}
         </nav>
       </div>
+      <RoleSwitcher />
     </div>
   );
 }
