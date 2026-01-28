@@ -6,6 +6,7 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 import ScreenOwnerDashboard from '../pages/screen-owner/Dashboard';
 import AdvertiserDashboard from '../pages/advertiser/Dashboard';
 import AdminDashboard from '../pages/admin/Dashboard';
+import Users from '../pages/admin/Users';
 import Screens from '../pages/screen-owner/Screens';
 import ScreenForm from '../pages/screen-owner/ScreenForm';
 import PlayerPage from '../pages/player/PlayerPage';
@@ -97,6 +98,11 @@ export default function AppRoutes() {
         <Route path="/admin" element={
           <ProtectedRoute allowedRoles={['admin']}>
             <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/users" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Users />
           </ProtectedRoute>
         } />
       </Route>
